@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/home/hui/cron_python_tasks')
+sys.path.append('/home/hui/cron_python_scripts')
 from cron_helper import Logger
 import time
 import requests
@@ -7,7 +7,7 @@ import requests
 log = Logger(__file__ or '.')
 
 
-# python3 /home/hui/cron_python_tasks/pin_ams_clia/ams_clia_pin.py
+# python3 /home/hui/cron_python_scripts/pin_ams_clia/ams_clia_pin.py
 
 url = "https://us-central1-ams-clia.cloudfunctions.net/api/webhook/webhooktest"
 
