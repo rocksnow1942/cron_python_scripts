@@ -106,12 +106,17 @@ config format:
     forwardEmail: [{name,email}] // additional emails to forward the link to.
     
 }
+
+Use cron to run the script
+
+59 12 * * 1-5 python3  /home/hui/cron_python_scripts/sendCliaBatchLink/sendBatchLink.py
+
 """
 
 
 if __name__ == "__main__":
     if len(sys.argv)>1:
-        print('Test config file')
+        log('Test config file', sys.argv)
         main(testConfig=True,mode=sys.argv[1])
     else:
         main(mode='prod')
