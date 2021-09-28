@@ -125,13 +125,13 @@ Use cron to run the script
 """
 
 
-if __name__ == "__main__":
-    log('Starting script 2')
-    if len(sys.argv)>1:
-        log(f'Test config file {sys.argv}', )
-        main(testConfig=True,mode=sys.argv[1])
-    else:
-        main(mode='prod')
+# if __name__ == "__main__":
+#     log('Starting script 2')
+#     if len(sys.argv)>1:
+#         log(f'Test config file {sys.argv}', )
+#         main(testConfig=True,mode=sys.argv[1])
+#     else:
+#         main(mode='prod')
     
     
     
