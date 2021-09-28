@@ -1,9 +1,17 @@
+file = open('/home/hui/cron_python_scripts/sendCliaBatchLink/testCron.txt','a')
+file.write('\n')
+counter = 1
+file.write(f'step {counter}\n')
+
 import sys
 sys.path.append('/home/hui/cron_python_scripts')
-from cron_helper import Logger
+
+try:
+    from cron_helper import Logger
+except Exception as e:
+    file.write(f'cron_helper.py not found{e}\n')
 import time
 import requests
 
-log = Logger(__file__ or '.')
+file.write('later \n')
 
-log('test run ')
