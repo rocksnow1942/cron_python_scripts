@@ -1,8 +1,13 @@
+import sys
+sys.path.append('/home/hui/cron_python_scripts')
+from cron_helper import Logger
+
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from dotenv import load_dotenv
 from datetime import datetime
+from pathlib import Path
 
 load_dotenv() 
 
@@ -30,7 +35,7 @@ def checkFileLen(folder,thre=200):
                 filec.append(p)
     log(f'Checked total of {total} files.')
     log(f'{len(filec)} new files length > {thre}.')
-    filec.sort(key=lambda x:len(x))
+    filec.sort(key=lambda x:len(x), reverse=True)
     for i in filec:
         log(i)
     return filec
@@ -63,14 +68,14 @@ def sendEmail(html, to):
         
         
 if __name__ == '__main__':
-
+    file = Path(__file__).parent / 'log.txt'
     try:
-        with open('./filelength_log.txt','r') as f:
+        with open(file,'r') as f:
             FileLengthLog = f.read()
     except:
         FileLengthLog = ''
             
-    logfile =  open('./filelength_log.txt','a')
+    logfile =  open(file,'a')
 
     folder = os.environ.get("FILE_NAME_LENGTH_FOLDER")
     thre = os.environ.get("FILE_NAME_LENGTH_THRESHOLD")
