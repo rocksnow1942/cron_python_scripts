@@ -20,3 +20,4 @@ log = Logger()
 
 log('test message')
 
+file.write('later write message \n')
