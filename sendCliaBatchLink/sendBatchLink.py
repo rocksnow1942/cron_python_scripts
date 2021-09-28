@@ -101,7 +101,8 @@ def main(testConfig=False,mode='prod'):
         except Exception as e:
             log(f'Failed to get batch link for {c["group"]}: {e}')    
     try:
-        sendEmail('Batch Link Url Notice', '\n'.join(notice), to=['jskanghui@gmail.com'])        
+        #sendEmail('Batch Link Url Notice', '\n'.join(notice), to=['jskanghui@gmail.com'])        
+        pass
     except:
         log('Send notification email error')
     
