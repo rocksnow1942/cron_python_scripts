@@ -14,4 +14,9 @@ import time
 import requests
 
 file.write('later \n')
+file.write(f'{__file__} \n')
+
+log = Logger()
+
+log('test message')
 
