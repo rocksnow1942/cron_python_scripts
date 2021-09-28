@@ -1,12 +1,11 @@
-import sys
-sys.path.append('/home/hui/cron_python_scripts')
-from cron_helper import Logger
-
 import os
+
+
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from dotenv import load_dotenv
 from datetime import datetime
+
 from pathlib import Path
 
 load_dotenv() 
