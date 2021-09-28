@@ -124,7 +124,7 @@ Use cron to run the script
 
 if __name__ == "__main__":
     if len(sys.argv)>1:
-        log('Test config file', sys.argv)
+        log(f'Test config file {sys.argv}', )
         main(testConfig=True,mode=sys.argv[1])
     else:
         main(mode='prod')
