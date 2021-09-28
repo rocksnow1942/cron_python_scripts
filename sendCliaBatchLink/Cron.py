@@ -7,9 +7,9 @@ import sys
 sys.path.append('/home/hui/cron_python_scripts')
 
 try:
-    from cron_helper import Logger,dirname
+    from cron_helper import Logger,dirname,date
 except Exception as e:
-    file.write(f'cron_helper.py not found{e}\n')
+    file.write(date(f'cron_helper.py not found{e}\n'))
 import time
 import requests
 from pathlib import Path
@@ -17,13 +17,13 @@ from pathlib import Path
 
 
 
-file.write('later \n')
-file.write(f'{__file__} \n')
+file.write(date('later \n'))
+file.write(date(f'{__file__} \n'))
 
-log = Logger()
+log = Logger(__file__)
 
 log('test message')
 
-file.write('later write message \n')
+file.write(date('later write message \n'))
 
-file.write(f'{dirname(__file__)} \n')
+file.write(date(f'{dirname(__file__)} \n'))
