@@ -1,12 +1,13 @@
 import sys
+from dotenv import load_dotenv
+
 sys.path.append('/home/hui/cron_python_scripts')
 sys.path.append('../')
 load_dotenv()
 log = Logger(__file__ or '.')
 
 try:
-    from cron_helper import Logger,dirname,sendEmail
-    from dotenv import load_dotenv
+    from cron_helper import Logger,dirname,sendEmail    
     from pathlib import Path
     import json
     from firebaseClient import Firebase
