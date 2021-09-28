@@ -1,21 +1,25 @@
 import sys
 sys.path.append('/home/hui/cron_python_scripts')
 sys.path.append('../')
-from cron_helper import Logger,dirname,sendEmail
-from dotenv import load_dotenv
-from pathlib import Path
-import json
-from firebaseClient import Firebase
-from datetime import datetime, timedelta
-import os
-from croniter import croniter
-import time
-
-
-
 load_dotenv()
-
 log = Logger(__file__ or '.')
+
+try:
+    from cron_helper import Logger,dirname,sendEmail
+    from dotenv import load_dotenv
+    from pathlib import Path
+    import json
+    from firebaseClient import Firebase
+    from datetime import datetime, timedelta
+    import os
+    from croniter import croniter
+    import time
+except Exception as e:
+    log(f'Failed to import module: {e}')
+
+
+
+
 
 def date():
     return datetime.now().strftime('%m/%d')
@@ -79,7 +83,8 @@ def main(testConfig=False,mode='prod'):
                 if testConfig:
                     log(f'Send batch Link Request: {batch}')
                 else:
-                    url = sendBatchLink(batch,firebase)
+                    url = ''
+                    # url = sendBatchLink(batch,firebase)
                     notice.append(f'Created batch {batch["group"]}: {url or "!!!!create url failed!!!!"}')
                     time.sleep(1)
             else:
