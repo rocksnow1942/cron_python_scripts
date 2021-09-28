@@ -20,6 +20,7 @@ try:
 except Exception as e:
     log(f'Failed to import module: {e}')
 
+log('Starting script')
 
 
 
@@ -74,6 +75,7 @@ def formatBatch(batch):
 
 
 def main(testConfig=False,mode='prod'):
+    log('Starting  main function')
     firebase =  Firebase(username=os.getenv('FIREBASE_USERNAME'), password=os.getenv('FIREBASE_PASSWORD'),mode=mode)
     firebase.start()
     config = load_config()
@@ -123,6 +125,7 @@ Use cron to run the script
 
 
 if __name__ == "__main__":
+    log('Starting script 2')
     if len(sys.argv)>1:
         log(f'Test config file {sys.argv}', )
         main(testConfig=True,mode=sys.argv[1])
