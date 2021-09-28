@@ -1,29 +1,21 @@
 
 import sys
 sys.path.append('/home/hui/cron_python_scripts')
-from cron_helper import Logger
+from cron_helper import Logger,sendEmail,dirname
 
 log = Logger(__file__ or '.')
 log('Starting script')
 
 from dotenv import load_dotenv
 load_dotenv()
-from cron_helper import sendEmail,dirname
-try:
-    
-    from pathlib import Path
-    import json
-    from firebaseClient import Firebase
-    from datetime import datetime, timedelta
-    import os
-    from croniter import croniter
-    import time
-except Exception as e:
-    log(f'Failed to import module: {e}')
 
-log('Starting script')
-
-
+from pathlib import Path
+import json
+from firebaseClient import Firebase
+from datetime import datetime, timedelta
+import os
+from croniter import croniter
+import time
 
 
 def date():
@@ -74,11 +66,29 @@ def formatBatch(batch):
         'forwardEmail': batch.get('forwardEmail',[]),
     }
 
+def loginFirebase(mode):
+    attempt = 10
+    while attempt > 0:
+        try:
+            fire = Firebase(username=os.getenv('FIREBASE_USERNAME'), password=os.getenv('FIREBASE_PASSWORD'),mode=mode)
+            fire.start()
+            log('Firebase started')
+            return fire
+        except Exception as e:
+            time.sleep(5)
+            log(f'Error in loginFirebase: {e}')
+            attempt -= 1    
+    return None
+
 
 def main(testConfig=False,mode='prod'):
-    log('Starting  main function')
-    firebase =  Firebase(username=os.getenv('FIREBASE_USERNAME'), password=os.getenv('FIREBASE_PASSWORD'),mode=mode)
-    firebase.start()
+
+    fire = loginFirebase(mode)
+    if not fire:
+        log('Failed to login to firebase')
+        sendEmail('[CRITICAL]Batch Link Url Creation', "<h1>!!!Can't Log in Firebase !!!</h1>", to=ADMIN_EMAIL)
+        return
+    
     config = load_config()
     notice = [f"{date()} Create Batch Link"]
     for c in config:
@@ -90,7 +100,7 @@ def main(testConfig=False,mode='prod'):
                     log(f'Send batch Link Request: {batch}')
                 else:
                     url = ''
-                    # url = sendBatchLink(batch,firebase)
+                    url = sendBatchLink(batch,fire)
                     notice.append(f'Created batch {batch["group"]}: {url or "!!!!create url failed!!!!"}')
                     time.sleep(1)
             else:
@@ -102,8 +112,7 @@ def main(testConfig=False,mode='prod'):
         except Exception as e:
             log(f'Failed to get batch link for {c["group"]}: {e}')    
     try:
-        #sendEmail('Batch Link Url Notice', '\n'.join(notice), to=['jskanghui@gmail.com'])        
-        pass
+        sendEmail('Batch Link Url Notice', '\n'.join(f"<p>{l}</p>" for l in notice), to=['jskanghui@gmail.com'])        
     except:
         log('Send notification email error')
     
@@ -124,15 +133,13 @@ Use cron to run the script
 59 12 * * 1-5 python3  /home/hui/cron_python_scripts/sendCliaBatchLink/sendBatchLink.py
 
 """
+ADMIN_EMAIL = ['jskanghui@gmail.com']
 
-
-# if __name__ == "__main__":
-#     log('Starting script 2')
-#     if len(sys.argv)>1:
-#         log(f'Test config file {sys.argv}', )
-#         main(testConfig=True,mode=sys.argv[1])
-#     else:
-#         main(mode='prod')
+if __name__ == "__main__":    
+    if len(sys.argv)>1:        
+        main(testConfig=True,mode=sys.argv[1])
+    else:
+        main(mode='prod')
     
     
     
