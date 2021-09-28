@@ -1,13 +1,14 @@
 import sys
-from dotenv import load_dotenv
-load_dotenv()
-
 sys.path.append('/home/hui/cron_python_scripts')
 sys.path.append('../')
-from cron_helper import Logger,dirname,sendEmail    
+from cron_helper import Logger
 
 log = Logger(__file__ or '.')
+log('Starting script')
 
+from dotenv import load_dotenv
+load_dotenv()
+from cron_helper import sendEmail,dirname
 try:
     
     from pathlib import Path
