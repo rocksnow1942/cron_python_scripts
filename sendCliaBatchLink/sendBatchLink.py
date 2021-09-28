@@ -100,7 +100,7 @@ def main(testConfig=False,mode='prod'):
                     log(f'Send batch Link Request: {batch}')
                 else:
                     url = ''
-                    url = sendBatchLink(batch,fire)
+                    # url = sendBatchLink(batch,fire)
                     notice.append(f'Created batch {batch["group"]}: {url or "!!!!create url failed!!!!"}')
                     time.sleep(1)
             else:
@@ -112,7 +112,8 @@ def main(testConfig=False,mode='prod'):
         except Exception as e:
             log(f'Failed to get batch link for {c["group"]}: {e}')    
     try:
-        sendEmail('Batch Link Url Notice', '\n'.join(f"<p>{l}</p>" for l in notice), to=['jskanghui@gmail.com'])        
+        # sendEmail('Batch Link Url Notice', '\n'.join(f"<p>{l}</p>" for l in notice), to=['jskanghui@gmail.com'])        
+        pass
     except:
         log('Send notification email error')
     
