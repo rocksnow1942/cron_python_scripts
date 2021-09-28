@@ -1,6 +1,5 @@
 import sys
 sys.path.append('/home/hui/cron_python_scripts')
-sys.path.append('../')
 from cron_helper import Logger
 
 log = Logger(__file__ or '.')
