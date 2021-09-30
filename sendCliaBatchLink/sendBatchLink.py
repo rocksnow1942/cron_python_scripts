@@ -38,7 +38,7 @@ def load_config():
 
 
 def sendBatchLink(batch,fire):
-    attempt = 5
+    attempt = 100
     while attempt > 0:
         try:
             res = fire.post('/scr/script/createBatchBookingUrl', json=batch)
@@ -51,7 +51,7 @@ def sendBatchLink(batch,fire):
         except Exception as e:
             log(f'{attempt} Error in request: grpu: {batch["group"]}: {e}')
         finally:
-            time.sleep(3)
+            time.sleep(10)
             attempt -= 1
     return None
         
@@ -75,7 +75,7 @@ def loginFirebase(mode):
             log('Firebase started')
             return fire
         except Exception as e:
-            time.sleep(5)
+            time.sleep(15)
             log(f'Error in loginFirebase: {e}')
             attempt -= 1    
     return None
