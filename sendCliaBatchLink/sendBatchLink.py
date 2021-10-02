@@ -123,10 +123,8 @@ def main(testConfig=False,mode='prod'):
 config format:
 {
     group: name of the group,
-    expInDays: how many days to expire the batch.
-    email: the email of the user to receive batch url email. This email must be a valid portal user email. 
+    expInHours: how many hours to expire the batch.
     forwardEmail: [{name,email}] // additional emails to forward the link to.
-    
 }
 
 Use cron to run the script
