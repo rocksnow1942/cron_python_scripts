@@ -72,15 +72,19 @@ class Firebase:
         # if self.refreshThread:
         #     self.refreshThread.join()
 
-    def post(self,url,*args,**kwargs):    
+    def post(self,url,*args,**kwargs):
+        kwargs.update(timeout=kwargs.get('timeout',10))
         return requests.post(self.url(url),*args,**kwargs,headers=self.headers)
 
     def get(self,url,*args,**kwargs):
+        kwargs.update(timeout=kwargs.get('timeout',10))
         return requests.get(self.url(url),*args,**kwargs,headers=self.headers)
     
     def delete(self,url,*args,**kwargs):
+        kwargs.update(timeout=kwargs.get('timeout',10))
         return requests.delete(self.url(url),*args,**kwargs,headers=self.headers)
 
     def put(self,url,*args,**kwargs):
+        kwargs.update(timeout=kwargs.get('timeout',10))
         return requests.put(url,*args,**kwargs,headers=self.headers)
  
