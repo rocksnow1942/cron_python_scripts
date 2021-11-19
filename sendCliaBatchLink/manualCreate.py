@@ -108,26 +108,36 @@ def formatBatch(batch):
 
 if __name__ == "__main__":
     username = input('Enter user name:\n')
-    fire = Firebase(username=username, mode='prod')
+    fire = Firebase(username=username, mode='dev')
 
 
-    # format the order information here
-    # the group account point person will also receive the email,
-    # regardless of the forwardEmail settings here.
-    batchOrder = {
-        "group": 'GS-DEMO',  # name of the group
-        "expInHours": 24,  # expiration in hours
-        "forwardEmail": [ # email addresses to forward to
-            {
-                "email": "jskanghui@gmail.com", 
-                "name": "Hui Kang"
-            }
-        ]
-    }
+# format the order information here
+# the group account point person will also receive the email,
+# regardless of the forwardEmail settings here.
+batchOrder = {
+    "group": 'GS-DEMO',  # name of the group
+    "expInHours": 24,  # expiration in hours
+    "forwardEmail": [ # email addresses to forward to
+        {
+            "email": "jskanghui@gmail.com", 
+            "name": "User"
+        },
+        {
+            "email": "kanghui06@gmail.com", 
+            "name": "Hui Kang"
+        },
+        {
+            "email": "hui.kang@aptitudemedical.com", 
+            "name": "Hui Kang"
+        }
+    ]
+}
 
-    res = fire.post('/scr/script/createBatchBookingUrl',
-                    json=formatBatch(batchOrder))
-    if res.status_code == 200:
-        print(res.json())
-    else:
-        print(res.json())
+res = fire.post('/scr/script/createBatchBookingUrl',
+                json=formatBatch(batchOrder))
+
+
+if res.status_code == 200:
+    print(res.json())
+else:
+    print(res.json())

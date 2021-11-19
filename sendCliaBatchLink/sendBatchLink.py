@@ -22,12 +22,6 @@ def date():
     return datetime.now().strftime('%m/%d')
 
 
-def ISO_Hours_Later(hours):
-    t = datetime.utcnow() + timedelta(hours=int(hours))
-    return t.strftime('%Y-%m-%dT%H:%M:%S.000Z')
-
-
-
 
 def load_config():
     config_file = dirname(__file__) / 'config.json'
@@ -38,7 +32,7 @@ def load_config():
 
 
 def sendBatchLink(batch,fire):
-    attempt = 100
+    attempt = 5
     while attempt > 0:
         try:
             res = fire.post('/scr/script/createBatchBookingUrl', json=batch)
@@ -49,22 +43,12 @@ def sendBatchLink(batch,fire):
             else:
                 log(f'{attempt} Failed to get batch url for {batch["group"]}: {res.text}')
         except Exception as e:
-            log(f'{attempt} Error in request: grpu: {batch["group"]}: {e}')
+            log(f'{attempt} Error in request: group: {batch["group"]}: {e}')
         finally:
-            time.sleep(10)
+            time.sleep(5)
             attempt -= 1
     return None
-        
 
-
-
-def formatBatch(batch):
-    return {
-        'group': batch['group'],        
-        'note': f'{date()} Batch Order',
-        'exp': ISO_Hours_Later(batch.get('expInHours',24)),
-        'forwardEmail': batch.get('forwardEmail',[]),
-    }
 
 def loginFirebase(mode):
     attempt = 10
@@ -91,26 +75,18 @@ def main(testConfig=False,mode='prod'):
     
     config = load_config()
     notice = [f"{date()} Create Batch Link"]
-    for c in config:
-        try:
-            cron = c['cron']
-            if (croniter.match(cron, datetime.now())):
-                batch = formatBatch(c)
-                if testConfig:
-                    log(f'Send batch Link Request: {batch}')
-                else:
-                    url = ''
-                    url = sendBatchLink(batch,fire)
-                    notice.append(f'Created batch {batch["group"]}: {url or "!!!!create url failed!!!!"}')
-                    time.sleep(1)
+    for batch in config:
+        try:            
+            if testConfig:
+                log(f'Send batch Link Request: {batch}')
             else:
-                log(f'Skip send link to {c["group"]}')
-                notice.append(f'Skip group {c["group"]}, cron: {c["cron"]}')
-                if testConfig:
-                    batch = formatBatch(c)
-                    log(f'Not sent batch Link Request: {batch}')
+                url = ''
+                url = sendBatchLink(batch,fire)
+                notice.append(f'Created batch {batch["group"]}: {url or "!!!!create url failed!!!!"}')
+                time.sleep(1)
+            
         except Exception as e:
-            log(f'Failed to get batch link for {c["group"]}: {e}')    
+            log(f'Failed to get batch link for {batch["group"]}: {e}')    
     try:
         sendEmail('Batch Link Url Notice', '\n'.join(f"<p>{l}</p>" for l in notice), to=['jskanghui@gmail.com'])        
         pass
