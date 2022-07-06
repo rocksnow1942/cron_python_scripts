@@ -88,7 +88,7 @@ def main(testConfig=False,mode='prod'):
         except Exception as e:
             log(f'Failed to get batch link for {batch["group"]}: {e}')    
     try:
-        sendEmail('Batch Link Url Notice', '\n'.join(f"<p>{l}</p>" for l in notice), to=['jskanghui@gmail.com'])        
+        sendEmail('Batch Link Url Notice', '\n'.join(f"<p>{l}</p>" for l in notice), to=ADMIN_EMAIL)
         pass
     except:
         log('Send notification email error')
@@ -108,7 +108,7 @@ Use cron to run the script
 59 12 * * 1-5 python3  /home/hui/cron_python_scripts/sendCliaBatchLink/sendBatchLink.py
 
 """
-ADMIN_EMAIL = ['jskanghui@gmail.com']
+ADMIN_EMAIL = ['hui.kang@aptitudemedical.com']
 
 if __name__ == "__main__":    
     if len(sys.argv)>1:        

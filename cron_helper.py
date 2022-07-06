@@ -35,9 +35,9 @@ def dirname(file):
 
 
 
-def sendEmail(subject, html, to):
+def sendEmail(subject, html, to, sender="cron_python_scripts"):
     message = Mail(
-        from_email='hui.kang@aptitudemedical.com',
+        from_email=f'{sender}@aptitudeclinical.com',
         to_emails=to,
         subject=subject,
         html_content=html
@@ -46,3 +46,9 @@ def sendEmail(subject, html, to):
     return sg.send(message)         
         
     
+
+
+if __name__ == '__main__':
+    from dotenv import load_dotenv
+    load_dotenv()
+    sendEmail("test email", 'hello', ['hui.kang@aptitudemedical.com'])

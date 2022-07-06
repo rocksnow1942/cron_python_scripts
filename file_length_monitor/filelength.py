@@ -81,7 +81,7 @@ if __name__ == '__main__':
 
     longfile = checkFileLen(folder,thre=int(thre))
 
-    to = ['hui.kang@aptitudemedical.com','wentao.shi@aptitudemedical.com','tyler.chozinski@aptitudemedical.com','erika.wells@aptitudemedical.com']
+    to = ['wentao.shi@aptitudemedical.com','tyler.chozinski@aptitudemedical.com','erika.wells@aptitudemedical.com']
 
     if longfile:
         msg = composeEmail(longfile)
